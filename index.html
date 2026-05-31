@@ -5,6 +5,40 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>leandronism</title>
+    
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="leandronism" />
+    <meta name="description" content="leandro's personal site" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.leandronism.me/" />
+    <meta property="og:title" content="leandronism" />
+    <meta property="og:description" content="leandro's personal site" />
+    <meta property="og:image" content="https://www.leandronism.me/og-image.png" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://www.leandronism.me/" />
+    <meta property="twitter:title" content="leandronism" />
+    <meta property="twitter:description" content="leandro's personal site" />
+    <meta property="twitter:image" content="https://www.leandronism.me/og-image.png" />
+    
+    <!-- SPA redirect for GitHub Pages -->
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // https://github.com/rafgraph/spa-github-pages
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
   </head>
   <body>
     <div id="root"></div>
