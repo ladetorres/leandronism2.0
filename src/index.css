@@ -3,6 +3,32 @@
 @theme {
   --font-serif: 'Source Serif 4', serif;
   --font-display: 'Cormorant Garamond', serif;
+  
+  --link-color: #0000EE;
+  
+  --text-size-1: 1px;
+  --text-size-2: 2px;
+  --text-size-3: 3px;
+  --text-size-4: 4px;
+  --text-size-5: 5px;
+  --text-size-6: 6px;
+  --text-size-7: 7px;
+  --text-size-8: 8px;
+  --text-size-9: 9px;
+  --text-size-10: 10px;
+  --text-size-12: 12px;
+  --text-size-14: 14px;
+  --text-size-16: 16px;
+  --text-size-18: 18px;
+  --text-size-20: 20px;
+  --text-size-24: 24px;
+  --text-size-28: 28px;
+  --text-size-32: 32px;
+  --text-size-36: 36px;
+  --text-size-40: 40px;
+  --text-size-48: 48px;
+  --text-size-56: 56px;
+  --text-size-64: 64px;
 }
 
 :root {
@@ -30,4 +56,17 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+@keyframes icon-flip {
+  0%, 49.99% {
+    transform: rotate(-15deg);
+  }
+  50%, 100% {
+    transform: rotate(15deg);
+  }
+}
+
+.icon-animated {
+  animation: icon-flip 2s steps(1, end) infinite;
 }

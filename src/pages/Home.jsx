@@ -20,7 +20,7 @@ function Home() {
             hi, i'm leandro
           </h1>
           <p className="font-serif text-lg lg:text-xl xl:text-2xl">
-            i write code, take photos, and write stories
+            i code stuff, take photos, and write stories
           </p>
         </div>
 
