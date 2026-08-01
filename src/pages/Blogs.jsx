@@ -71,7 +71,7 @@ function ContactMe() {
           }}
         >
           if you enjoyed my photo essays or want to know my favorite pokemon,
-          i'd be happy to chat (no not really, but it's civil to say that)
+          i'd be happy to chat (no not really)
         </p>
       </div>
 

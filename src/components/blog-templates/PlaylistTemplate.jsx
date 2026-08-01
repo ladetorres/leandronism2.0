@@ -4,11 +4,11 @@ import LeftAlignedIcon from '../LeftAlignedIcon'
 
 // Wrapper components for Iconify icons to match the interface expected by LeftAlignedIcon
 const PaintBrushIcon = ({ size, style }) => (
-  <Icon icon="pixel:paint-brush-solid" width={size} height={size} style={{ ...style, opacity: 0.9 }} className="icon-animated" />
+  <Icon icon="pixel:paint-brush-solid" width={size} height={size} style={{ ...style, color: '#000000', opacity: 0.9 }} className="icon-animated" />
 )
 
 const MusicIcon = ({ size, style }) => (
-  <Icon icon="pixel:music" width={size} height={size} style={{ ...style, opacity: 0.9 }} className="icon-animated" />
+  <Icon icon="pixel:music" width={size} height={size} style={{ ...style, color: '#000000', opacity: 0.9 }} className="icon-animated" />
 )
 
 function PlaylistTemplate({ blog }) {
@@ -59,30 +59,15 @@ function PlaylistTemplate({ blog }) {
   }, [blog.urlPath])
 
   return (
-    <div className="min-h-screen relative" style={{ backgroundColor: blog.backgroundColor, color: blog.textColor, fontFamily }}>
+    <div className="min-h-screen relative" style={{ backgroundColor: '#F2F2F2', color: '#000000', fontFamily }}>
       {/* Blank Space on Top */}
-      <div className="h-[130px] md:h-[140px] lg:h-[150px] xl:h-[160px]" style={{ backgroundColor: blog.backgroundColor }}></div>
+      <div className="h-[130px] md:h-[140px] lg:h-[150px] xl:h-[160px]" style={{ backgroundColor: '#F2F2F2' }}></div>
 
-      {/* Color Palette Lines - Small screens (full width) */}
-      {blog.colorPalette && blog.colorPalette.length > 0 && (
-        <div className="w-full lg:hidden mb-16">
-          {blog.colorPalette.map((color, index) => (
-            <div key={index} className="h-[9px]" style={{ backgroundColor: color }}></div>
-          ))}
-        </div>
-      )}
-
-      {/* Top horizontal bars - Large screens */}
-      {blog.colorPalette && blog.colorPalette.length > 0 && (
-        <div className="hidden lg:block w-full mb-16">
-          {blog.colorPalette.map((color, index) => (
-            <div key={index} className="h-[9px] w-full" style={{ backgroundColor: color }} />
-          ))}
-        </div>
-      )}
+      {/* Single color bar using backgroundColor */}
+      <div className="w-full mb-16 h-[28px]" style={{ backgroundColor: blog.backgroundColor }}></div>
 
       {/* Title and Subtitle */}
-      <div className="w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-[630px] mx-auto">
+      <div className="w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-[630px] mx-auto mb-10 md:mb-12 lg:mb-16">
         {/* Title wrapper with proper height for scaled text */}
         <div className="max-w-full" style={{ width: '100%', height: 'auto', minHeight: '40px' }}>
           <h1
@@ -117,15 +102,15 @@ function PlaylistTemplate({ blog }) {
 
       {/* Horizontal line */}
       <div className="w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-[630px] mx-auto mb-10 md:mb-12 lg:mb-16">
-        <div className="border-t" style={{ borderColor: `${blog.textColor}1a` }}></div>
+        <div className="border-t" style={{ borderColor: '#00000026' }}></div>
       </div>
 
       <div className="pb-16">
         {/* Content */}
-        <div ref={contentContainerRef} className="w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-[630px] mx-auto" style={{ color: blog.textColor }}>
+        <div ref={contentContainerRef} className="w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-[630px] mx-auto" style={{ color: '#000000' }}>
           {/* Music icon for xs - above the content */}
           <div className="sm:hidden mb-4">
-            <Icon icon="pixel:music" width={32} height={32} style={{ color: blog.textColor, opacity: 0.9 }} className="icon-animated" />
+            <Icon icon="pixel:music" width={32} height={32} style={{ color: '#000000', opacity: 0.9 }} className="icon-animated" />
           </div>
 
           {/* Content wrapper to account for scaled text height */}
@@ -194,7 +179,7 @@ function PlaylistTemplate({ blog }) {
                         wordBreak: 'break-word'
                       }}
                     >
-                      <span style={{ marginRight: '4px' }}>{String(index + 1).padStart(2, '0')}</span>
+                      <span style={{ marginRight: '4px' }}>{String(song.songIndex).padStart(2, '0')}</span>
                       <span>{song.title}</span>
                       <span style={{ opacity: 0.5 }}> — {song.artist}</span>
                     </p>
@@ -211,7 +196,7 @@ function PlaylistTemplate({ blog }) {
             <div ref={paletteContainerRef} className="w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-[630px] mx-auto mt-28">
               {/* Palette icon for xs - above the palette */}
               <div className="sm:hidden mb-4">
-                <Icon icon="pixel:paint-brush-solid" width={32} height={32} style={{ color: blog.textColor, opacity: 0.9 }} className="icon-animated" />
+                <Icon icon="pixel:paint-brush-solid" width={32} height={32} style={{ color: '#000000', opacity: 0.9 }} className="icon-animated" />
               </div>
 
               <div className="flex justify-between items-start gap-8">
@@ -266,7 +251,7 @@ function PlaylistTemplate({ blog }) {
             <LeftAlignedIcon
               Icon={PaintBrushIcon}
               size={32}
-              color={blog.textColor}
+              color="#000000"
               containerRef={paletteContainerRef}
               gap={44}
               showAbove={false}
@@ -276,7 +261,7 @@ function PlaylistTemplate({ blog }) {
 
         {/* Footer */}
         <div className="w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-[630px] mx-auto">
-          <div className="mt-28 pt-12 border-t" style={{ borderColor: `${blog.textColor}1a` }}>
+          <div className="mt-28 pt-12 border-t" style={{ borderColor: '#00000026' }}>
             {/* Page Views */}
             {pageViews !== null && (
               <div className="mb-10 max-w-full" style={{ width: '100%', minHeight: '20px' }}>
@@ -347,7 +332,7 @@ function PlaylistTemplate({ blog }) {
       <LeftAlignedIcon
         Icon={MusicIcon}
         size={32}
-        color={blog.textColor}
+        color="#000000"
         containerRef={contentContainerRef}
         gap={32}
         showAbove={false}
