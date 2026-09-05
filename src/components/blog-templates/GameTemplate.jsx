@@ -85,17 +85,17 @@ function GameTemplate({ blog }) {
                 width: '12.5%'
               }}
             >
-              Only available on screens &gt;= 1280px
+              Only playable on screens &gt;= 1280px
             </p>
           </div>
         </div>
 
         {/* Game canvas for xl screens */}
         <div className="hidden xl:flex xl:justify-center xl:items-center">
-          <div 
-            style={{ 
-              width: '900px', 
-              height: '600px', 
+          <div
+            style={{
+              width: '900px',
+              height: '600px',
               backgroundColor: '#FFFFFF',
               border: '1px solid #999',
               overflow: 'hidden'
@@ -124,11 +124,11 @@ function GameTemplate({ blog }) {
                   Tags:{' '}
                   {blog.tags.map((tag, index) => (
                     <span key={index}>
-                      <a 
-                        href="#" 
+                      <a
+                        href="#"
                         onClick={(e) => e.preventDefault()}
-                        style={{ 
-                          color: 'var(--link-color)', 
+                        style={{
+                          color: 'var(--link-color)',
                           textDecoration: 'none',
                           opacity: 1
                         }}
