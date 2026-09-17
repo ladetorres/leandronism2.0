@@ -1,17 +1,45 @@
-import { useRef, useEffect } from 'react'
 import PokemonParty from '../../games/PokemonParty'
+import PokemonGuessWho from '../../games/PokemonGuessWho'
 
-// Map of game paths to components
+// Map of game paths to components + viewport / canvas config
 const gameComponents = {
-  '/games/PokemonParty.jsx': PokemonParty,
+  '/games/PokemonParty.jsx': {
+    Component: PokemonParty,
+    // Playable at xl (1280px) and up
+    playableClass: 'hidden xl:flex xl:justify-center xl:items-center',
+    notPlayableClass: 'xl:hidden',
+    notPlayableMessage: 'Only playable on screens >= 1280px',
+    canvasStyle: {
+      width: '900px',
+      height: '600px',
+      backgroundColor: '#FFFFFF',
+      border: '1px solid #999',
+      overflow: 'hidden',
+    },
+  },
+  '/games/PokemonGuessWho.jsx': {
+    Component: PokemonGuessWho,
+    // Playable below md (max-width: 767px)
+    playableClass: 'flex justify-center items-center md:hidden',
+    notPlayableClass: 'hidden md:block',
+    notPlayableMessage: 'Only playable on screens < 767px',
+    canvasStyle: {
+      width: '100%',
+      maxWidth: '100%',
+      height: '580px',
+      backgroundColor: '#FFFFFF',
+      border: '1px solid #999',
+      overflow: 'hidden',
+    },
+  },
 }
 
 function GameTemplate({ blog }) {
   const fontFamily = blog.font === 'tahoma' ? 'Tahoma, Geneva, Verdana, sans-serif' : undefined
   const useTahoma = blog.font === 'tahoma'
 
-  // Get the game component
-  const GameComponent = blog.gamePath ? gameComponents[blog.gamePath] : null
+  const gameConfig = blog.gamePath ? gameComponents[blog.gamePath] : null
+  const GameComponent = gameConfig?.Component ?? null
 
   // Retro pixelated text effect styles
   const retroStyles = {
@@ -36,7 +64,7 @@ function GameTemplate({ blog }) {
   return (
     <div className="min-h-screen relative" style={{ backgroundColor: '#F2F2F2', color: '#000000', fontFamily }}>
       {/* Blank Space on Top */}
-      <div className="h-[130px] md:h-[140px] lg:h-[150px] xl:h-[160px]" style={{ backgroundColor: '#F2F2F2' }}></div>
+      <div className="h-[60px] md:h-[140px] lg:h-[150px] xl:h-[160px]" style={{ backgroundColor: '#F2F2F2' }}></div>
 
       {/* Title and Subtitle */}
       <div className="w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-[630px] mx-auto mb-10 md:mb-12 lg:mb-16">
@@ -74,36 +102,32 @@ function GameTemplate({ blog }) {
 
       {/* Game Content */}
       <div className="w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-none mx-auto pb-16">
-        {/* Message for small screens */}
-        <div className="xl:hidden">
-          <div className="max-w-full" style={{ width: '100%', minHeight: '20px' }}>
-            <p
-              className={`${useTahoma ? '' : 'font-serif'} text-size-2 leading-tight`}
-              style={{
-                ...retroStyles,
-                fontFamily,
-                width: '12.5%'
-              }}
-            >
-              Only playable on screens &gt;= 1280px
-            </p>
-          </div>
-        </div>
+        {gameConfig && (
+          <>
+            {/* Message when viewport is outside playable range */}
+            <div className={gameConfig.notPlayableClass}>
+              <div className="max-w-full" style={{ width: '100%', minHeight: '20px' }}>
+                <p
+                  className={`${useTahoma ? '' : 'font-serif'} text-size-2 leading-tight`}
+                  style={{
+                    ...retroStyles,
+                    fontFamily,
+                    width: '12.5%'
+                  }}
+                >
+                  {gameConfig.notPlayableMessage}
+                </p>
+              </div>
+            </div>
 
-        {/* Game canvas for xl screens */}
-        <div className="hidden xl:flex xl:justify-center xl:items-center">
-          <div
-            style={{
-              width: '900px',
-              height: '600px',
-              backgroundColor: '#FFFFFF',
-              border: '1px solid #999',
-              overflow: 'hidden'
-            }}
-          >
-            {GameComponent && <GameComponent />}
-          </div>
-        </div>
+            {/* Game canvas for playable viewports */}
+            <div className={gameConfig.playableClass}>
+              <div style={gameConfig.canvasStyle}>
+                {GameComponent && <GameComponent />}
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Footer */}

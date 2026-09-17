@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Futura LT Pro';
+  src: url('/fonts/FuturaLTProLight.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Futura LT Pro';
+  src: url('/fonts/FuturaLTProMedium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-serif: 'Source Serif 4', serif;
   --font-display: 'Cormorant Garamond', serif;

@@ -279,7 +279,7 @@ the way i'd gladly book another trip just to bike and get lost in your alleys ag
     ],
     paletteLine: `
     category is pale orange and soulless grays.`,
-    date: '2026-09-12',
+    date: '2026-09-27',
     content: [
       {
         type: 'paragraph',
@@ -361,12 +361,12 @@ Choose your battlers wisely.
     type: 'game',
     backgroundColor: '#fae1ab',
     textColor: '#964519',
+    mobile: false,
     tags: ['game'],
     date: '2026-08-31',
     gamePath: '/games/PokemonParty.jsx',
     blogFeaturedImagePath: 'public/game-photos/pokemon-party/venusaur-shouting-portrait.png',
   },
-
   {
     id: 4,
     font: 'tahoma',
@@ -405,6 +405,26 @@ overcast mornings make for slow weekends. rains persist and after a while of snu
 some days you just feel like rotting in bed, cleaning your room, finally picking up that book you've had for years.
 here is a short playlist of piano ballads, of women with something to convey.
     `
+  },
+  {
+    id: 5,
+    font: 'tahoma',
+    title: 'guess who?',
+    urlPath: '/blogs/poke-guess-who',
+    subtitle: 'A fan-made Guess Who? game with Pokémon characters.',
+    // subtitle: 'A fan-made Pokémon type matchup simulator. Not affiliated with or endorsed by Nintendo.',
+    subSubtitle: `
+    A simple game board for the popular game Guess Who?
+    characters replaced with Pokémon Characters
+`,
+    type: 'game',
+    backgroundColor: '#fae1ab',
+    textColor: '#964519',
+    tags: ['game'],
+    mobile: true,
+    date: '2026-09-20',
+    gamePath: '/games/PokemonGuessWho.jsx',
+    blogFeaturedImagePath: 'public/game-photos/pokemon-guess-who/gengar-happy-portrait.png',
   },
 ]
 
