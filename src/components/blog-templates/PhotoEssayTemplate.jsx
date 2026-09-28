@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react'
 import { Icon } from '@iconify/react'
 import LeftAlignedIcon from '../LeftAlignedIcon'
 import PhonePhotoGallery from '../PhonePhotoGallery'
+import { bodyStyle, headerStyle } from '../../styles/siteFonts'
 
 // Wrapper components for Iconify icons to match the interface expected by LeftAlignedIcon
 const PaintBrushIcon = ({ size, style }) => (
@@ -13,66 +14,9 @@ const CameraIcon = ({ size, style }) => (
 )
 
 function PhotoEssayTemplate({ blog }) {
-  const fontFamily = blog.font === 'tahoma' ? 'Tahoma, Geneva, Verdana, sans-serif' : undefined
-  const useTahoma = blog.font === 'tahoma'
-  const captionRefs = useRef([])
-  const [captionHeights, setCaptionHeights] = useState([])
   const paletteContainerRef = useRef(null)
   const contentContainerRef = useRef(null)
-  const contentTextRef = useRef(null)
-  const [contentHeight, setContentHeight] = useState(0)
   const [pageViews, setPageViews] = useState(null)
-
-  // Retro pixelated text effect styles
-  const retroStyles = {
-    transform: 'scale(8)',
-    transformOrigin: 'top left',
-    imageRendering: 'pixelated',
-    WebkitFontSmoothing: 'none',
-    MozOsxFontSmoothing: 'grayscale',
-    lineHeight: '1.25'
-  }
-
-  // Title-specific retro styles with aggressive scale
-  const titleRetroStyles = {
-    transform: 'scale(21.33)',
-    transformOrigin: 'top left',
-    imageRendering: 'pixelated',
-    WebkitFontSmoothing: 'none',
-    MozOsxFontSmoothing: 'grayscale',
-    lineHeight: '1.25'
-  }
-
-  // Wrapper styles for scaled text elements to fix layout
-  // Each wrapper accounts for the 8x scale factor
-  const textWrapperBase = {
-    display: 'inline-block',
-    width: 'fit-content',
-    overflow: 'visible'
-  }
-
-  // Measure caption heights after render
-  useEffect(() => {
-    const heights = captionRefs.current.map(ref => {
-      if (ref) {
-        // Get the scrollHeight (actual content height) and multiply by scale factor
-        const baseHeight = ref.scrollHeight
-        const scaledHeight = baseHeight * 8
-        return scaledHeight // No buffer
-      }
-      return 0
-    })
-    setCaptionHeights(heights)
-  }, [blog.photos])
-
-  // Measure content text height after render
-  useEffect(() => {
-    if (contentTextRef.current) {
-      const baseHeight = contentTextRef.current.scrollHeight
-      const scaledHeight = baseHeight * 8
-      setContentHeight(scaledHeight + 32) // Add 32px buffer
-    }
-  }, [blog.content])
 
   // Fetch page view count
   useEffect(() => {
@@ -84,7 +28,7 @@ function PhotoEssayTemplate({ blog }) {
   }, [blog.urlPath])
 
   return (
-    <div className="min-h-screen relative" style={{ backgroundColor: '#F2F2F2', color: '#000000', fontFamily }}>
+    <div className="min-h-screen relative" style={{ backgroundColor: '#F2F2F2', color: '#000000', ...bodyStyle }}>
       {/* Blank Space on Top */}
       <div className="h-[130px] md:h-[140px] lg:h-[150px] xl:h-[160px]" style={{ backgroundColor: '#F2F2F2' }}></div>
 
@@ -93,31 +37,19 @@ function PhotoEssayTemplate({ blog }) {
 
       {/* Title and Subtitle */}
       <div className="w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-[630px] mx-auto mb-10 md:mb-12 lg:mb-16">
-        {/* Title wrapper with proper height for scaled text */}
-        <div className="max-w-full" style={{ width: '100%', height: 'auto', minHeight: '40px' }}>
+        <div className="max-w-full" style={{ width: '100%' }}>
           <h1
-            className={`${useTahoma ? '' : 'font-display'} text-size-1 leading-tight`}
-            style={{
-              ...titleRetroStyles,
-              fontFamily,
-              width: '4.688%',
-              wordBreak: 'break-word'
-            }}
+            className="leading-tight"
+            style={headerStyle}
           >
             {blog.title}
           </h1>
         </div>
-        {/* Subtitle wrapper with proper height for scaled text */}
         {blog.subtitle && (
-          <div className="mb-8 md:mb-10 max-w-full" style={{ width: '100%', height: 'auto', minHeight: '20px' }}>
+          <div className="mb-8 md:mb-10 max-w-full" style={{ width: '100%' }}>
             <p
-              className={`${useTahoma ? '' : 'font-serif'} text-size-2 leading-tight`}
-              style={{
-                ...retroStyles,
-                fontFamily,
-                width: '12.5%',
-                wordBreak: 'break-word'
-              }}
+              className="leading-tight"
+              style={bodyStyle}
             >
               {blog.subtitle}
             </p>
@@ -137,16 +69,11 @@ function PhotoEssayTemplate({ blog }) {
           <Icon icon="pixel:camera" width={32} height={32} style={{ color: '#000000', opacity: 0.9 }} className="icon-animated" />
         </div>
 
-        {/* Content wrapper to account for scaled text height */}
-        <div className="mb-12 max-w-full" style={{ minHeight: `${contentHeight}px`, width: '100%', marginTop: 0 }}>
+        <div className="mb-12 max-w-full" style={{ width: '100%', marginTop: 0 }}>
           <p
-            ref={contentTextRef}
-            className={`${useTahoma ? '' : 'font-serif'} text-size-2 leading-tight`}
+            className="leading-tight"
             style={{
-              ...retroStyles,
-              fontFamily,
-              width: '12.5%',
-              wordBreak: 'break-word',
+              ...bodyStyle,
               margin: 0
             }}
           >
@@ -169,23 +96,14 @@ function PhotoEssayTemplate({ blog }) {
                 }}
               />
               {photo.caption && (
-                <div className="w-full" style={{ minHeight: `${captionHeights[index] || 0}px` }}>
+                <div className="w-full">
                   <div className="w-full sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-[630px]">
-                    <div style={{ width: '12.5%', margin: 0 }}>
+                    <div style={{ margin: 0 }}>
                       <p
-                        ref={el => captionRefs.current[index] = el}
-                        className={`${useTahoma ? '' : 'font-serif'} text-size-2 opacity-60 italic`}
+                        className="opacity-60 italic"
                         style={{
-                          transform: 'scale(8)',
-                          transformOrigin: 'top left',
-                          imageRendering: 'pixelated',
-                          WebkitFontSmoothing: 'none',
-                          MozOsxFontSmoothing: 'grayscale',
-                          fontFamily,
-                          width: '100%',
-                          wordBreak: 'break-word',
+                          ...bodyStyle,
                           textAlign: 'left',
-                          lineHeight: '1.25',
                           display: 'block'
                         }}
                       >
@@ -203,9 +121,6 @@ function PhotoEssayTemplate({ blog }) {
         {blog.phonePhotosGallery && (
           <PhonePhotoGallery
             phonePhotosGallery={blog.phonePhotosGallery}
-            fontFamily={fontFamily}
-            useTahoma={useTahoma}
-            retroStyles={retroStyles}
             textColor="#000000"
           />
         )}
@@ -224,13 +139,8 @@ function PhotoEssayTemplate({ blog }) {
                 {blog.paletteLine && (
                   <div className="flex-1 min-w-0">
                     <p
-                      className={`${useTahoma ? '' : 'font-serif'} text-size-2`}
-                      style={{
-                        ...retroStyles,
-                        fontFamily,
-                        width: '12.5%',
-                        wordBreak: 'break-word'
-                      }}
+                      className=""
+                      style={bodyStyle}
                     >
                       {blog.paletteLine}
                     </p>
@@ -242,14 +152,13 @@ function PhotoEssayTemplate({ blog }) {
                   {blog.colorPalette.map((color, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-16 min-h-[40px]"
+                      className="flex items-center gap-8 min-h-[40px]"
                     >
                       <div className="h-[20px] flex items-start">
                         <p
-                          className={`${useTahoma ? '' : 'font-serif'} text-size-2`}
+                          className=""
                           style={{
-                            ...retroStyles,
-                            fontFamily,
+                            ...bodyStyle,
                             width: 'auto',
                             whiteSpace: 'nowrap'
                           }}
@@ -283,15 +192,11 @@ function PhotoEssayTemplate({ blog }) {
         <div className="mt-28 pt-12 border-t" style={{ borderColor: '#00000026' }}>
           {/* Page Views */}
           {pageViews !== null && (
-            <div className="mb-10 max-w-full" style={{ width: '100%', minHeight: '20px' }}>
-              <div style={{ width: '12.5%' }}>
+            <div className="mb-10 max-w-full" style={{ width: '100%' }}>
+              <div>
                 <p
-                  className={`${useTahoma ? '' : 'font-serif'} text-size-2 opacity-50`}
-                  style={{
-                    ...retroStyles,
-                    fontFamily,
-                    wordBreak: 'break-word'
-                  }}
+                  className="opacity-50"
+                  style={bodyStyle}
                 >
                   Page views: {pageViews}
                 </p>
@@ -301,11 +206,11 @@ function PhotoEssayTemplate({ blog }) {
 
           {/* Tags */}
           {blog.tags && blog.tags.length > 0 && (
-            <div className="mb-10 max-w-full" style={{ width: '100%', minHeight: '20px' }}>
-              <div style={{ width: '12.5%' }}>
+            <div className="mb-10 max-w-full" style={{ width: '100%' }}>
+              <div>
                 <p
-                  className={`${useTahoma ? '' : 'font-serif'} text-size-2`}
-                  style={{ ...retroStyles, fontFamily }}
+                  className=""
+                  style={bodyStyle}
                 >
                   <span style={{ marginRight: '4px', opacity: 0.5 }}>Tags:</span>{blog.tags.map((tag, index) => (
                     <span
@@ -326,29 +231,19 @@ function PhotoEssayTemplate({ blog }) {
           )}
 
           {blog.dateTaken && (
-            <div className="mb-6 max-w-full" style={{ width: '100%', minHeight: '20px' }}>
+            <div className="mb-6 max-w-full" style={{ width: '100%' }}>
               <p
-                className={`${useTahoma ? '' : 'font-serif'} text-size-2 opacity-50`}
-                style={{
-                  ...retroStyles,
-                  fontFamily,
-                  width: '12.5%',
-                  wordBreak: 'break-word'
-                }}
+                className="opacity-50"
+                style={bodyStyle}
               >
                 Photos taken {blog.dateTaken}
               </p>
             </div>
           )}
-          <div className="max-w-full" style={{ width: '100%', minHeight: '20px' }}>
+          <div className="max-w-full" style={{ width: '100%' }}>
             <p
-              className={`${useTahoma ? '' : 'font-serif'} text-size-2 opacity-50`}
-              style={{
-                ...retroStyles,
-                fontFamily,
-                width: '12.5%',
-                wordBreak: 'break-word'
-              }}
+              className="opacity-50"
+              style={bodyStyle}
             >
               Published {new Date(blog.date).toLocaleDateString('en-US', {
                 year: 'numeric',

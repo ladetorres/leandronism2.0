@@ -1,13 +1,14 @@
 import { useState, useRef } from 'react'
 import { Icon } from '@iconify/react'
 import LeftAlignedIcon from './LeftAlignedIcon'
+import { bodyStyle } from '../styles/siteFonts'
 
 // Camera icon component to match the interface expected by parent
 const CameraIcon = ({ size, style }) => (
   <Icon icon="pixel:camera" width={size} height={size} style={{ ...style, opacity: 0.9 }} className="icon-animated" />
 )
 
-function PhonePhotoGallery({ phonePhotosGallery, fontFamily, useTahoma, retroStyles, textColor }) {
+function PhonePhotoGallery({ phonePhotosGallery, textColor }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const headerContainerRef = useRef(null)
 
@@ -52,19 +53,11 @@ function PhonePhotoGallery({ phonePhotosGallery, fontFamily, useTahoma, retroSty
         </div>
 
         {/* Header text */}
-        <div style={{ minHeight: 'fit-content', width: '100%' }}>
+        <div style={{ width: '100%' }}>
           <p 
-            className={`${useTahoma ? '' : 'font-serif'} text-size-2 leading-tight`} 
+            className="leading-tight" 
             style={{ 
-              transform: 'scale(8)',
-              transformOrigin: 'top left',
-              imageRendering: 'pixelated',
-              WebkitFontSmoothing: 'none',
-              MozOsxFontSmoothing: 'grayscale',
-              lineHeight: '1.25',
-              fontFamily, 
-              width: '12.5%',
-              wordBreak: 'break-word',
+              ...bodyStyle,
               margin: 0
             }}
           >
@@ -121,18 +114,12 @@ function PhonePhotoGallery({ phonePhotosGallery, fontFamily, useTahoma, retroSty
         <div style={{ flex: 1 }}>
           {/* Caption */}
           {currentPhoto.caption && (
-            <div className="mb-4" style={{ minHeight: '20px' }}>
-              <div style={{ width: '25%' }}>
+            <div className="mb-4">
+              <div>
                 <p 
-                  className={`${useTahoma ? '' : 'font-serif'} text-size-2`} 
+                  className="" 
                   style={{ 
-                    transform: 'scale(8)',
-                    transformOrigin: 'top left',
-                    imageRendering: 'pixelated',
-                    WebkitFontSmoothing: 'none',
-                    MozOsxFontSmoothing: 'grayscale',
-                    lineHeight: '1.25',
-                    fontFamily,
+                    ...bodyStyle,
                     textAlign: 'left',
                     opacity: 0.6
                   }}
@@ -144,18 +131,12 @@ function PhonePhotoGallery({ phonePhotosGallery, fontFamily, useTahoma, retroSty
           )}
 
           {/* Filename */}
-          <div className="mb-2" style={{ minHeight: '20px' }}>
-            <div style={{ width: '25%' }}>
+          <div className="mb-2">
+            <div>
               <p 
-                className={`${useTahoma ? '' : 'font-serif'} text-size-2`} 
+                className="" 
                 style={{ 
-                  transform: 'scale(8)',
-                  transformOrigin: 'top left',
-                  imageRendering: 'pixelated',
-                  WebkitFontSmoothing: 'none',
-                  MozOsxFontSmoothing: 'grayscale',
-                  lineHeight: '1.25',
-                  fontFamily,
+                  ...bodyStyle,
                   textAlign: 'left',
                   opacity: 0.4
                 }}
@@ -167,18 +148,12 @@ function PhonePhotoGallery({ phonePhotosGallery, fontFamily, useTahoma, retroSty
 
           {/* Location / Coordinates */}
           {(currentPhoto.location || currentPhoto.coordinates) && (
-            <div className="mb-2" style={{ minHeight: '20px' }}>
-              <div style={{ width: '25%' }}>
+            <div className="mb-2">
+              <div>
                 <p 
-                  className={`${useTahoma ? '' : 'font-serif'} text-size-2`} 
+                  className="" 
                   style={{ 
-                    transform: 'scale(8)',
-                    transformOrigin: 'top left',
-                    imageRendering: 'pixelated',
-                    WebkitFontSmoothing: 'none',
-                    MozOsxFontSmoothing: 'grayscale',
-                    lineHeight: '1.25',
-                    fontFamily,
+                    ...bodyStyle,
                     textAlign: 'left',
                     opacity: 0.4
                   }}
@@ -193,18 +168,12 @@ function PhonePhotoGallery({ phonePhotosGallery, fontFamily, useTahoma, retroSty
 
           {/* Camera Settings */}
           {(currentPhoto.focalLength || currentPhoto.fNumber || currentPhoto.exposure) && (
-            <div style={{ minHeight: '20px' }}>
-              <div style={{ width: '25%' }}>
+            <div>
+              <div>
                 <p 
-                  className={`${useTahoma ? '' : 'font-serif'} text-size-2`} 
+                  className="" 
                   style={{ 
-                    transform: 'scale(8)',
-                    transformOrigin: 'top left',
-                    imageRendering: 'pixelated',
-                    WebkitFontSmoothing: 'none',
-                    MozOsxFontSmoothing: 'grayscale',
-                    lineHeight: '1.25',
-                    fontFamily,
+                    ...bodyStyle,
                     textAlign: 'left',
                     opacity: 0.4
                   }}
@@ -224,18 +193,12 @@ function PhonePhotoGallery({ phonePhotosGallery, fontFamily, useTahoma, retroSty
       {/* Navigation controls */}
       <div className="space-y-2">
         {/* Previous/Next line */}
-        <div style={{ minHeight: '20px' }}>
+        <div>
           <div style={{ display: 'inline-block' }}>
             <p 
-              className={`${useTahoma ? '' : 'font-serif'} text-size-2`} 
+              className="" 
               style={{ 
-                transform: 'scale(8)',
-                transformOrigin: 'top left',
-                imageRendering: 'pixelated',
-                WebkitFontSmoothing: 'none',
-                MozOsxFontSmoothing: 'grayscale',
-                lineHeight: '1.25',
-                fontFamily,
+                ...bodyStyle,
                 whiteSpace: 'nowrap'
               }}
             >
@@ -244,7 +207,7 @@ function PhonePhotoGallery({ phonePhotosGallery, fontFamily, useTahoma, retroSty
                 style={{
                   color: currentIndex === 0 ? 'gray' : linkColor,
                   cursor: currentIndex === 0 ? 'not-allowed' : 'pointer',
-                  marginRight: '4px',
+                  marginRight: '10px',
                   opacity: currentIndex === 0 ? 0.5 : 1
                 }}
               >
@@ -265,18 +228,12 @@ function PhonePhotoGallery({ phonePhotosGallery, fontFamily, useTahoma, retroSty
         </div>
 
         {/* Index numbers line */}
-        <div style={{ minHeight: '20px' }}>
+        <div>
           <div style={{ display: 'inline-block' }}>
             <p 
-              className={`${useTahoma ? '' : 'font-serif'} text-size-2`} 
+              className="" 
               style={{ 
-                transform: 'scale(8)',
-                transformOrigin: 'top left',
-                imageRendering: 'pixelated',
-                WebkitFontSmoothing: 'none',
-                MozOsxFontSmoothing: 'grayscale',
-                lineHeight: '1.25',
-                fontFamily,
+                ...bodyStyle,
                 whiteSpace: 'nowrap'
               }}
             >
@@ -287,7 +244,7 @@ function PhonePhotoGallery({ phonePhotosGallery, fontFamily, useTahoma, retroSty
                   style={{
                     color: currentIndex === index ? 'gray' : linkColor,
                     cursor: currentIndex === index ? 'not-allowed' : 'pointer',
-                    marginRight: index < photos.length - 1 ? '2px' : '0',
+                    marginRight: index < photos.length - 1 ? '8px' : '0',
                     opacity: currentIndex === index ? 0.5 : 1
                   }}
                 >

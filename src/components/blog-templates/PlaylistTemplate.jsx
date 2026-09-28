@@ -1,6 +1,9 @@
 import { useRef, useEffect, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import { Icon } from '@iconify/react'
 import LeftAlignedIcon from '../LeftAlignedIcon'
+import { bodyStyle, featuredStyle, headerStyle } from '../../styles/siteFonts'
+import { markdownComponents, normalizeMarkdown } from './markdownContent.jsx'
 
 // Wrapper components for Iconify icons to match the interface expected by LeftAlignedIcon
 const PaintBrushIcon = ({ size, style }) => (
@@ -12,42 +15,10 @@ const MusicIcon = ({ size, style }) => (
 )
 
 function PlaylistTemplate({ blog }) {
-  const fontFamily = blog.font === 'tahoma' ? 'Tahoma, Geneva, Verdana, sans-serif' : undefined
-  const useTahoma = blog.font === 'tahoma'
   const paletteContainerRef = useRef(null)
   const contentContainerRef = useRef(null)
-  const contentTextRef = useRef(null)
-  const [contentHeight, setContentHeight] = useState(0)
   const [pageViews, setPageViews] = useState(null)
-
-  // Retro pixelated text effect styles
-  const retroStyles = {
-    transform: 'scale(8)',
-    transformOrigin: 'top left',
-    imageRendering: 'pixelated',
-    WebkitFontSmoothing: 'none',
-    MozOsxFontSmoothing: 'grayscale',
-    lineHeight: '1.25'
-  }
-
-  // Title-specific retro styles with aggressive scale
-  const titleRetroStyles = {
-    transform: 'scale(21.33)',
-    transformOrigin: 'top left',
-    imageRendering: 'pixelated',
-    WebkitFontSmoothing: 'none',
-    MozOsxFontSmoothing: 'grayscale',
-    lineHeight: '1.25'
-  }
-
-  // Measure content text height after render
-  useEffect(() => {
-    if (contentTextRef.current) {
-      const baseHeight = contentTextRef.current.scrollHeight
-      const scaledHeight = baseHeight * 8
-      setContentHeight(scaledHeight + 32) // Add 32px buffer
-    }
-  }, [blog.content])
+  const contentBlocks = Array.isArray(blog.content) ? blog.content : null
 
   // Fetch page view count
   useEffect(() => {
@@ -59,7 +30,7 @@ function PlaylistTemplate({ blog }) {
   }, [blog.urlPath])
 
   return (
-    <div className="min-h-screen relative" style={{ backgroundColor: '#F2F2F2', color: '#000000', fontFamily }}>
+    <div className="min-h-screen relative" style={{ backgroundColor: '#F2F2F2', color: '#000000', ...bodyStyle }}>
       {/* Blank Space on Top */}
       <div className="h-[130px] md:h-[140px] lg:h-[150px] xl:h-[160px]" style={{ backgroundColor: '#F2F2F2' }}></div>
 
@@ -68,31 +39,19 @@ function PlaylistTemplate({ blog }) {
 
       {/* Title and Subtitle */}
       <div className="w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-[630px] mx-auto mb-10 md:mb-12 lg:mb-16">
-        {/* Title wrapper with proper height for scaled text */}
-        <div className="max-w-full" style={{ width: '100%', height: 'auto', minHeight: '40px' }}>
+        <div className="max-w-full" style={{ width: '100%' }}>
           <h1
-            className={`${useTahoma ? '' : 'font-display'} text-size-1 leading-tight`}
-            style={{
-              ...titleRetroStyles,
-              fontFamily,
-              width: '4.688%',
-              wordBreak: 'break-word'
-            }}
+            className="leading-tight"
+            style={headerStyle}
           >
             {blog.title}
           </h1>
         </div>
-        {/* Subtitle wrapper with proper height for scaled text */}
         {blog.subtitle && (
-          <div className="mb-8 md:mb-10 max-w-full" style={{ width: '100%', height: 'auto', minHeight: '20px' }}>
+          <div className="mb-8 md:mb-10 max-w-full" style={{ width: '100%' }}>
             <p
-              className={`${useTahoma ? '' : 'font-serif'} text-size-2 leading-tight`}
-              style={{
-                ...retroStyles,
-                fontFamily,
-                width: '12.5%',
-                wordBreak: 'break-word'
-              }}
+              className="leading-tight"
+              style={bodyStyle}
             >
               {blog.subtitle}
             </p>
@@ -113,22 +72,97 @@ function PlaylistTemplate({ blog }) {
             <Icon icon="pixel:music" width={32} height={32} style={{ color: '#000000', opacity: 0.9 }} className="icon-animated" />
           </div>
 
-          {/* Content wrapper to account for scaled text height */}
-          <div className="mb-12 max-w-full" style={{ minHeight: `${contentHeight}px`, width: '100%', marginTop: 0 }}>
-            <p
-              ref={contentTextRef}
-              className={`${useTahoma ? '' : 'font-serif'} text-size-2 leading-tight`}
-              style={{
-                ...retroStyles,
-                fontFamily,
-                width: '12.5%',
-                wordBreak: 'break-word',
-                margin: 0
-              }}
-            >
-              {blog.content}
-            </p>
-          </div>
+          {/* Content wrapper */}
+          {contentBlocks ? (
+            <div className="mb-12 max-w-full" style={{ width: '100%', marginTop: 0 }}>
+              {contentBlocks.map((block, index) => {
+                if (block.type === 'paragraph') {
+                  return (
+                    <div key={index} className="mb-12 max-w-full" style={{ width: '100%' }}>
+                      <div
+                        className="leading-tight"
+                        style={{
+                          ...bodyStyle,
+                          overflowWrap: 'break-word',
+                          whiteSpace: 'pre-wrap'
+                        }}
+                      >
+                        <ReactMarkdown components={markdownComponents}>
+                          {normalizeMarkdown(block.text)}
+                        </ReactMarkdown>
+                      </div>
+                    </div>
+                  )
+                }
+
+                if (block.type === 'featured-line') {
+                  return (
+                    <div key={index} className="mb-12 max-w-full" style={{ width: '100%' }}>
+                      <div
+                        className="leading-tight"
+                        style={{
+                          ...featuredStyle,
+                          whiteSpace: 'pre-wrap'
+                        }}
+                      >
+                        <ReactMarkdown components={markdownComponents}>
+                          {normalizeMarkdown(block.text)}
+                        </ReactMarkdown>
+                      </div>
+                    </div>
+                  )
+                }
+
+                if (block.type === 'quote') {
+                  return (
+                    <div key={index} className="mb-12 max-w-full" style={{ width: '100%' }}>
+                      <div
+                        className="leading-tight"
+                        style={{
+                          ...bodyStyle,
+                          overflowWrap: 'break-word',
+                          whiteSpace: 'pre-wrap',
+                          paddingLeft: '2em',
+                          borderLeft: '2px solid #000000',
+                          opacity: 0.8
+                        }}
+                      >
+                        <span style={{ marginRight: '4px' }}>"</span>
+                        <ReactMarkdown components={markdownComponents}>
+                          {normalizeMarkdown(block.text)}
+                        </ReactMarkdown>
+                        <span style={{ marginLeft: '4px' }}>"</span>
+                      </div>
+                    </div>
+                  )
+                }
+
+                if (block.type === 'divider') {
+                  return (
+                    <div key={index} className="mb-12 max-w-full" style={{ width: '100%' }}>
+                      <div style={{ paddingLeft: '16px', paddingRight: '16px' }}>
+                        <div className="border-t" style={{ borderColor: '#00000026' }}></div>
+                      </div>
+                    </div>
+                  )
+                }
+
+                return null
+              })}
+            </div>
+          ) : (
+            <div className="mb-12 max-w-full" style={{ width: '100%', marginTop: 0 }}>
+              <p
+                className="leading-tight"
+                style={{
+                  ...bodyStyle,
+                  margin: 0
+                }}
+              >
+                {blog.content}
+              </p>
+            </div>
+          )}
 
           {/* Spotify Embed */}
           {blog.playlistEmbed && (
@@ -154,32 +188,22 @@ function PlaylistTemplate({ blog }) {
           {/* Song List */}
           {blog.songs && blog.songs.length > 0 && (
             <div className="mb-12">
-              <div className="mb-6 max-w-full" style={{ width: '100%', minHeight: '20px' }}>
+              <div className="mb-6 max-w-full" style={{ width: '100%' }}>
                 <p
-                  className={`${useTahoma ? '' : 'font-serif'} text-size-2`}
-                  style={{
-                    ...retroStyles,
-                    fontFamily,
-                    width: '12.5%',
-                    wordBreak: 'break-word'
-                  }}
+                  className=""
+                  style={bodyStyle}
                 >
                   featured in this tracklist
                 </p>
               </div>
               <div className="space-y-4">
                 {blog.songs.map((song, index) => (
-                  <div key={index} className="max-w-full" style={{ width: '100%', minHeight: '20px' }}>
+                  <div key={index} className="max-w-full" style={{ width: '100%' }}>
                     <p
-                      className={`${useTahoma ? '' : 'font-serif'} text-size-2`}
-                      style={{
-                        ...retroStyles,
-                        fontFamily,
-                        width: '12.5%',
-                        wordBreak: 'break-word'
-                      }}
+                      className=""
+                      style={bodyStyle}
                     >
-                      <span style={{ marginRight: '4px' }}>{String(song.songIndex).padStart(2, '0')}</span>
+                      <span style={{ marginRight: '10px' }}>{String(song.songIndex).padStart(2, '0')}</span>
                       <span>{song.title}</span>
                       <span style={{ opacity: 0.5 }}> — {song.artist}</span>
                     </p>
@@ -204,13 +228,8 @@ function PlaylistTemplate({ blog }) {
                 {blog.paletteLine && (
                   <div className="flex-1 min-w-0">
                     <p
-                      className={`${useTahoma ? '' : 'font-serif'} text-size-2`}
-                      style={{
-                        ...retroStyles,
-                        fontFamily,
-                        width: '12.5%',
-                        wordBreak: 'break-word'
-                      }}
+                      className=""
+                      style={bodyStyle}
                     >
                       {blog.paletteLine}
                     </p>
@@ -222,14 +241,13 @@ function PlaylistTemplate({ blog }) {
                   {blog.colorPalette.map((color, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-16 min-h-[40px]"
+                      className="flex items-center gap-8 min-h-[40px]"
                     >
                       <div className="h-[20px] flex items-start">
                         <p
-                          className={`${useTahoma ? '' : 'font-serif'} text-size-2`}
+                          className=""
                           style={{
-                            ...retroStyles,
-                            fontFamily,
+                            ...bodyStyle,
                             width: 'auto',
                             whiteSpace: 'nowrap'
                           }}
@@ -264,15 +282,11 @@ function PlaylistTemplate({ blog }) {
           <div className="mt-28 pt-12 border-t" style={{ borderColor: '#00000026' }}>
             {/* Page Views */}
             {pageViews !== null && (
-              <div className="mb-10 max-w-full" style={{ width: '100%', minHeight: '20px' }}>
-                <div style={{ width: '12.5%' }}>
+              <div className="mb-10 max-w-full" style={{ width: '100%' }}>
+                <div>
                   <p
-                    className={`${useTahoma ? '' : 'font-serif'} text-size-2 opacity-50`}
-                    style={{
-                      ...retroStyles,
-                      fontFamily,
-                      wordBreak: 'break-word'
-                    }}
+                    className="opacity-50"
+                    style={bodyStyle}
                   >
                     Page views: {pageViews}
                   </p>
@@ -282,11 +296,11 @@ function PlaylistTemplate({ blog }) {
 
             {/* Tags */}
             {blog.tags && blog.tags.length > 0 && (
-              <div className="mb-10 max-w-full" style={{ width: '100%', minHeight: '20px' }}>
-                <div style={{ width: '12.5%' }}>
+              <div className="mb-10 max-w-full" style={{ width: '100%' }}>
+                <div>
                   <p
-                    className={`${useTahoma ? '' : 'font-serif'} text-size-2`}
-                    style={{ ...retroStyles, fontFamily }}
+                    className=""
+                    style={bodyStyle}
                   >
                     <span style={{ marginRight: '4px', opacity: 0.5 }}>Tags:</span>{blog.tags.map((tag, index) => (
                       <span
@@ -307,15 +321,10 @@ function PlaylistTemplate({ blog }) {
             )}
 
             {/* Published date */}
-            <div className="max-w-full" style={{ width: '100%', minHeight: '20px' }}>
+            <div className="max-w-full" style={{ width: '100%' }}>
               <p
-                className={`${useTahoma ? '' : 'font-serif'} text-size-2 opacity-50`}
-                style={{
-                  ...retroStyles,
-                  fontFamily,
-                  width: '12.5%',
-                  wordBreak: 'break-word'
-                }}
+                className="opacity-50"
+                style={bodyStyle}
               >
                 Published {new Date(blog.date).toLocaleDateString('en-US', {
                   year: 'numeric',

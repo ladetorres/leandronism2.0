@@ -16,9 +16,67 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Silom';
+  src: url('/fonts/Silom.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Silom';
+  src: url('/fonts/Silom-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lisa Terminal';
+  src: url('/fonts/LisaTerminal.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'VCR EAS';
+  src: url('/fonts/VCR-EAS.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Determination Sans';
+  src: url('/fonts/DeterminationSans.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Agamefont';
+  src: url('/fonts/Agamefont.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BitBlox Monospaced';
+  src: url('/fonts/BitBloxMonospaced.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-serif: 'Source Serif 4', serif;
   --font-display: 'Cormorant Garamond', serif;
+  --font-header: 'BitBlox Monospaced', monospace;
+  --font-body: 'Lisa Terminal', monospace;
   
   --link-color: #0000EE;
   

@@ -4,7 +4,7 @@
 export const blogData = [
   {
     id: 0,
-    font: 'tahoma',
+    font: 'site',
     title: 'kaohsiung crashouts',
     colorPalette: [
       '#67BED9',
@@ -26,6 +26,7 @@ export const blogData = [
     tags: [
       'photo essay',
       'self',
+      'travel',
       'taiwan'
     ],
     backgroundColor: '#91c4e3',
@@ -262,7 +263,7 @@ the way i'd gladly book another trip just to bike and get lost in your alleys ag
   },
   {
     id: 1,
-    font: 'tahoma',
+    font: 'site',
     title: 'bothering to learn [anything] in the age of prompting',
     urlPath: '/blogs/pointlessness-of-learning',
     subtitle: 'finding reasons to learn developer skills in the time of automated work',
@@ -279,7 +280,7 @@ the way i'd gladly book another trip just to bike and get lost in your alleys ag
     ],
     paletteLine: `
     category is pale orange and soulless grays.`,
-    date: '2026-09-27',
+    date: '2026-09-30',
     content: [
       {
         type: 'paragraph',
@@ -301,13 +302,13 @@ the way i'd gladly book another trip just to bike and get lost in your alleys ag
       {
         type: 'paragraph',
         text: `
-          [1] potentially
+          [1] [draft written June '26] potentially [updated answer on September] yeah definitely
       `},
     ],
   },
   {
     id: 2,
-    font: 'tahoma',
+    font: 'site',
     title: 'my august playlist',
     urlPath: '/blogs/august-2026-playlist',
     subtitle: 'afternoon saigon showers and cozy cafe corners',
@@ -347,7 +348,7 @@ expanding the list of bops i don't understand but i know by heart.
   },
   {
     id: 3,
-    font: 'tahoma',
+    font: 'site',
     title: 'pocket monster party',
     urlPath: '/blogs/pocket-monster-party',
     subtitle: 'A fan-made Pokémon type matchup simulator.',
@@ -369,7 +370,7 @@ Choose your battlers wisely.
   },
   {
     id: 4,
-    font: 'tahoma',
+    font: 'site',
     title: 'my september playlist',
     urlPath: '/blogs/september-2026-playlist',
     subtitle: 'for lazy mornings staring at the ceiling',
@@ -408,7 +409,7 @@ here is a short playlist of piano ballads, of women with something to convey.
   },
   {
     id: 5,
-    font: 'tahoma',
+    font: 'site',
     title: 'guess who?',
     urlPath: '/blogs/poke-guess-who',
     subtitle: 'A fan-made Guess Who? game with Pokémon characters.',
@@ -425,6 +426,237 @@ here is a short playlist of piano ballads, of women with something to convey.
     date: '2026-09-20',
     gamePath: '/games/PokemonGuessWho.jsx',
     blogFeaturedImagePath: 'public/game-photos/pokemon-guess-who/gengar-happy-portrait.png',
+  },
+  {
+    id: 6,
+    font: 'site',
+    title: 'a witchy october playlist',
+    urlPath: '/blogs/october-2026-playlist',
+    subtitle: 'a messy playlist for AHS\' messy, hyped, cross-over 13th season',
+    type: 'playlist',
+    featuredImage: 'https://images.unsplash.com/photo-1728927471523-487819893bdc?w=1200',
+    backgroundColor: '#394870',
+    colorPalette: [
+      '#ffffff',
+      '#ff0000',
+      '#85182f',
+      '#0a0606',
+      '#333333',
+      '#4d4949',
+    ],
+    paletteLine: `
+    palette is black and black and black, and asylum gray, coven red, murderous shades of what-the-fuck-is-this-dialogue 's.
+    `,
+    textColor: '#964519',
+    tags: ['playlist'],
+    date: '2026-09-27',
+    playlistEmbed: 'https://open.spotify.com/embed/playlist/1xrbFpKpjdBWTg99dTYFsm',
+    songs: [
+      { songIndex: 1, title: 'Tainted Love', artist: 'Hannah Peel' },
+      { songIndex: 2, title: 'Dominique', artist: 'The Singing Nun (Soeur Sourire)' },
+      { songIndex: 3, title: 'House of the Rising Sun', artist: 'Lauren O\'Connell' },
+      { songIndex: 5, title: 'I Can Dream About You - Single Version', artist: 'Dan Hartman' },
+      { songIndex: 12, title: 'Criminal - From "American Horror Story"', artist: 'American Horror Story Cast, Sarah Paulson' }
+    ],
+    content: [
+      {
+        type: 'paragraph',
+        text: `
+          the coven is back! and so is constance, and james patrick march. and a new anti-christ. or maybe it's satan themself
+    this time? and ryan murphy's group of nepo baby interns in his writing room holding jessica lange at gunpoint to say
+    "the nips - the nipples!".
+        `
+      },
+      {
+        type: 'paragraph',
+        text: `
+          nevertheless, American Horror Story is a substantial part of the development
+    of my psyche, and a core of my personality from high school and college. i am sat seeing lange and paulson back,
+    my father and husband and son evan peters, my spirit animal madison, and everyone else trot for
+    one last round of fan service
+    (agree with me, Apocalypse is, too) prancing in my screen doing lazy remakes of their famous one-liners. milk
+    this shit ryan murphy, we're with you til the end of this season!
+        `
+      },
+    ]
+  },
+  {
+    id: 7,
+    font: 'site',
+    title: 'hong kong venting',
+    colorPalette: [
+      '#67BED9',
+      '#3f5364',
+      '#420000',
+      '#56703b',
+      '#f1370c',
+      '#bc1400',
+    ],
+    paletteLine: `
+    test
+    `,
+    urlPath: '/blogs/hongkong-venting',
+    subtitle: 'test 2',
+    type: 'photo-essay',
+    tags: [
+      'photo essay',
+      'travel',
+      'hong kong'
+    ],
+    backgroundColor: '#91c4e3',
+    textColor: '#300000',
+    dateTaken: 'November and December \'25',
+    date: '2026-10-09',
+    footerText: 'Photos from my Unsplash account',
+    footerTextLink: 'https://unsplash.com/@ladetorres',
+    // headerImage: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=1200',
+    headerImage: 'https://images.unsplash.com/photo-1777892665104-d66a5607c093?w=2400',
+    featuredImage: 'https://images.unsplash.com/photo-1777891911233-a6d80985794c?w=1200',
+      // headerImage: 'https://images.unsplash.com/photo-1777891911475-2b76c73e421e?w=2400',
+    photosTemp: [],
+    phonePhotosGallery: {
+      'hongkong-venting': [
+        {
+          fileName: 'fxn-seaside-tree',
+          fileNameWithExt: 'fxn-seaside-tree.jpg',
+          caption: 'test6',
+          coordinates: '22.214°N, 120.683°E',
+          location: 'Pingtung',
+          focalLength: '35.0mm',
+          fNumber: 'f/1.8',
+          exposure: '1/14286'
+        },
+      ],
+    },
+    photos: [
+      {
+        url: 'https://images.unsplash.com/photo-1768472586464-6bac52d2d981?w=1200',
+        orientation: 'portrait',
+        caption: `
+        test1
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1768997658763-0c03cf77158c?w=1200',
+        orientation: 'portrait',
+        caption: `
+        test2
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1768997658721-e61ad124f60e?w=1200',
+        orientation: 'portrait',
+        caption: `
+        test3
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1768997658749-0d6d04e8f2c2?w=1200',
+        orientation: 'portrait',
+        caption: `
+        test4
+          `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1769143376372-03e8f6bedbf6?w=1200',
+        orientation: 'portrait',
+        caption: `
+          test5
+        `
+      },
+      // {
+      //   url: 'https://images.unsplash.com/photo-1777891911298-ff8656ff39d0?w=1200',
+      //   orientation: 'portrait',
+      //   caption: 'coral reefs above the sea kineme'
+      // },
+      {
+        url: 'https://images.unsplash.com/photo-1769143376315-b12d3251f636?w=1200',
+        orientation: 'landscape',
+        caption: `
+        test6
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1769439187190-60bb2e1c905c?w=1200',
+        orientation: 'portrait',
+        caption: `
+        test7
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1769439337633-831290f3666b?w=1200',
+        orientation: 'portrait',
+        caption: `
+          test8
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1769439381576-ac2fe277e652?w=1200',
+        orientation: 'landscape',
+        caption: `
+          test8
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1771122367178-5cec2051bc31?w=1200',
+        orientation: 'landscape',
+        caption: `
+          test8
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1771122367105-6dcc641f718a?w=1200',
+        orientation: 'landscape',
+        caption: `
+          test8
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1771122366984-bfbf2e6f44fd?w=1200',
+        orientation: 'landscape',
+        caption: `
+          test8
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1773559250354-0d7281984a89?w=1200',
+        orientation: 'portrait',
+        caption: `
+          test8
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1773559389011-91cd9a3f5124?w=1200',
+        orientation: 'landscape',
+        caption: `
+          test8
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1774270149389-ff376a2d478b?w=1200',
+        orientation: 'landscape',
+        caption: `
+          test8
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1774270149411-59e20c04cbb6?w=1200',
+        orientation: 'landscape',
+        caption: `
+          test8
+        `
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1774270149435-136ccac59a13?w=1200',
+        orientation: 'portrait',
+        caption: `
+          test8
+        `
+      }
+    ],
+    content: `
+      test9
+    `
   },
 ]
 

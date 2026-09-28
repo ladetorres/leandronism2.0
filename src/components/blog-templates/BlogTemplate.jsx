@@ -2,6 +2,8 @@ import { useRef, useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Icon } from '@iconify/react'
 import LeftAlignedIcon from '../LeftAlignedIcon'
+import { bodyStyle, featuredStyle, headerStyle } from '../../styles/siteFonts'
+import { markdownComponents, normalizeMarkdown } from './markdownContent.jsx'
 
 // Wrapper components for Iconify icons to match the interface expected by LeftAlignedIcon
 const PaintBrushIcon = ({ size, style }) => (
@@ -13,59 +15,9 @@ const PenIcon = ({ size, style }) => (
 )
 
 function BlogTemplate({ blog }) {
-  const fontFamily = blog.font === 'tahoma' ? 'Tahoma, Geneva, Verdana, sans-serif' : undefined
-  const useTahoma = blog.font === 'tahoma'
   const paletteContainerRef = useRef(null)
   const contentContainerRef = useRef(null)
-  const contentRefs = useRef([])
-  const [contentHeights, setContentHeights] = useState([])
   const [pageViews, setPageViews] = useState(null)
-
-  // Retro pixelated text effect styles
-  const retroStyles = {
-    transform: 'scale(8)',
-    transformOrigin: 'top left',
-    imageRendering: 'pixelated',
-    WebkitFontSmoothing: 'none',
-    MozOsxFontSmoothing: 'grayscale',
-    lineHeight: '1.25'
-  }
-
-  // Title-specific retro styles with aggressive scale
-  const titleRetroStyles = {
-    transform: 'scale(21.33)',
-    transformOrigin: 'top left',
-    imageRendering: 'pixelated',
-    WebkitFontSmoothing: 'none',
-    MozOsxFontSmoothing: 'grayscale',
-    lineHeight: '1.25'
-  }
-
-  // Measure content block heights after render
-  useEffect(() => {
-    const heights = contentRefs.current.map((ref, index) => {
-      if (ref && blog.content[index]) {
-        const block = blog.content[index]
-        // Get the scrollHeight and multiply by scale factor
-        const baseHeight = ref.scrollHeight
-        let scaleFactor = 8 // default for paragraph and quote
-        
-        // Featured line uses scale(10)
-        if (block.type === 'featured-line') {
-          scaleFactor = 10
-        }
-        
-        // Divider doesn't need scaling
-        if (block.type === 'divider') {
-          return baseHeight
-        }
-        
-        return baseHeight * scaleFactor
-      }
-      return 0
-    })
-    setContentHeights(heights)
-  }, [blog.content])
 
   // Fetch page view count
   useEffect(() => {
@@ -77,7 +29,7 @@ function BlogTemplate({ blog }) {
   }, [blog.urlPath])
 
   return (
-    <div className="min-h-screen relative" style={{ backgroundColor: '#F2F2F2', color: '#000000', fontFamily }}>
+    <div className="min-h-screen relative" style={{ backgroundColor: '#F2F2F2', color: '#000000', ...bodyStyle }}>
       {/* Blank Space on Top */}
       <div className="h-[130px] md:h-[140px] lg:h-[150px] xl:h-[160px]" style={{ backgroundColor: '#F2F2F2' }}></div>
 
@@ -86,31 +38,19 @@ function BlogTemplate({ blog }) {
 
       {/* Title and Subtitle */}
       <div className="w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-[630px] mx-auto mb-10 md:mb-12 lg:mb-16">
-        {/* Title wrapper with proper height for scaled text */}
-        <div className="max-w-full" style={{ width: '100%', height: 'auto', minHeight: '40px' }}>
+        <div className="max-w-full" style={{ width: '100%' }}>
           <h1
-            className={`${useTahoma ? '' : 'font-display'} text-size-1 leading-tight`}
-            style={{
-              ...titleRetroStyles,
-              fontFamily,
-              width: '4.688%',
-              wordBreak: 'break-word'
-            }}
+            className="leading-tight"
+            style={headerStyle}
           >
             {blog.title}
           </h1>
         </div>
-        {/* Subtitle wrapper with proper height for scaled text */}
         {blog.subtitle && (
-          <div className="mb-8 md:mb-10 max-w-full" style={{ width: '100%', height: 'auto', minHeight: '20px' }}>
+          <div className="mb-8 md:mb-10 max-w-full" style={{ width: '100%' }}>
             <p
-              className={`${useTahoma ? '' : 'font-serif'} text-size-2 leading-tight`}
-              style={{
-                ...retroStyles,
-                fontFamily,
-                width: '12.5%',
-                wordBreak: 'break-word'
-              }}
+              className="leading-tight"
+              style={bodyStyle}
             >
               {blog.subtitle}
             </p>
@@ -137,28 +77,17 @@ function BlogTemplate({ blog }) {
               // Paragraph type
               if (block.type === 'paragraph') {
                 return (
-                  <div key={index} className="mb-12 max-w-full" style={{ width: '100%', minHeight: `${contentHeights[index] || 20}px` }}>
+                  <div key={index} className="mb-12 max-w-full" style={{ width: '100%' }}>
                     <div
-                      ref={el => contentRefs.current[index] = el}
-                      className={`${useTahoma ? '' : 'font-serif'} text-size-2 leading-tight`}
+                      className="leading-tight"
                       style={{
-                        ...retroStyles,
-                        fontFamily,
-                        width: '12.5%',
-                        wordBreak: 'break-word',
+                        ...bodyStyle,
                         overflowWrap: 'break-word',
                         whiteSpace: 'pre-wrap'
                       }}
                     >
-                      <ReactMarkdown
-                        components={{
-                          p: ({node, ...props}) => <span style={{ display: 'inline', width: '100%' }} {...props} />,
-                          strong: ({node, ...props}) => <strong style={{ fontWeight: 'bold', display: 'inline' }} {...props} />,
-                          em: ({node, ...props}) => <em style={{ fontStyle: 'italic', display: 'inline' }} {...props} />,
-                          code: ({node, inline, ...props}) => <code style={{ display: 'inline', whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowWrap: 'break-word' }} {...props} />,
-                        }}
-                      >
-                        {block.text}
+                      <ReactMarkdown components={markdownComponents}>
+                        {normalizeMarkdown(block.text)}
                       </ReactMarkdown>
                     </div>
                   </div>
@@ -168,33 +97,16 @@ function BlogTemplate({ blog }) {
               // Featured line type (bigger text)
               if (block.type === 'featured-line') {
                 return (
-                  <div key={index} className="mb-12 max-w-full" style={{ width: '100%', minHeight: `${contentHeights[index] || 20}px` }}>
+                  <div key={index} className="mb-12 max-w-full" style={{ width: '100%' }}>
                     <div
-                      ref={el => contentRefs.current[index] = el}
-                      className={`${useTahoma ? '' : 'font-serif'} text-size-3 leading-tight`}
+                      className="leading-tight"
                       style={{
-                        transform: 'scale(10)',
-                        transformOrigin: 'top left',
-                        imageRendering: 'pixelated',
-                        WebkitFontSmoothing: 'none',
-                        MozOsxFontSmoothing: 'grayscale',
-                        lineHeight: '1.25',
-                        fontFamily,
-                        width: '10%',
-                        wordBreak: 'break-word',
-                        overflowWrap: 'break-word',
+                        ...featuredStyle,
                         whiteSpace: 'pre-wrap'
                       }}
                     >
-                      <ReactMarkdown
-                        components={{
-                          p: ({node, ...props}) => <span style={{ display: 'inline', width: '100%' }} {...props} />,
-                          strong: ({node, ...props}) => <strong style={{ fontWeight: 'bold', display: 'inline' }} {...props} />,
-                          em: ({node, ...props}) => <em style={{ fontStyle: 'italic', display: 'inline' }} {...props} />,
-                          code: ({node, inline, ...props}) => <code style={{ display: 'inline', whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowWrap: 'break-word' }} {...props} />,
-                        }}
-                      >
-                        {block.text}
+                      <ReactMarkdown components={markdownComponents}>
+                        {normalizeMarkdown(block.text)}
                       </ReactMarkdown>
                     </div>
                   </div>
@@ -204,15 +116,11 @@ function BlogTemplate({ blog }) {
               // Quote type (early 2000s style with ASCII quote marks)
               if (block.type === 'quote') {
                 return (
-                  <div key={index} className="mb-12 max-w-full" style={{ width: '100%', minHeight: `${contentHeights[index] || 20}px` }}>
+                  <div key={index} className="mb-12 max-w-full" style={{ width: '100%' }}>
                     <div
-                      ref={el => contentRefs.current[index] = el}
-                      className={`${useTahoma ? '' : 'font-serif'} text-size-2 leading-tight`}
+                      className="leading-tight"
                       style={{
-                        ...retroStyles,
-                        fontFamily,
-                        width: '12.5%',
-                        wordBreak: 'break-word',
+                        ...bodyStyle,
                         overflowWrap: 'break-word',
                         whiteSpace: 'pre-wrap',
                         paddingLeft: '2em',
@@ -221,15 +129,8 @@ function BlogTemplate({ blog }) {
                       }}
                     >
                       <span style={{ marginRight: '4px' }}>"</span>
-                      <ReactMarkdown
-                        components={{
-                          p: ({node, ...props}) => <span style={{ display: 'inline', width: '100%' }} {...props} />,
-                          strong: ({node, ...props}) => <strong style={{ fontWeight: 'bold', display: 'inline' }} {...props} />,
-                          em: ({node, ...props}) => <em style={{ fontStyle: 'italic', display: 'inline' }} {...props} />,
-                          code: ({node, inline, ...props}) => <code style={{ display: 'inline', whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowWrap: 'break-word' }} {...props} />,
-                        }}
-                      >
-                        {block.text}
+                      <ReactMarkdown components={markdownComponents}>
+                        {normalizeMarkdown(block.text)}
                       </ReactMarkdown>
                       <span style={{ marginLeft: '4px' }}>"</span>
                     </div>
@@ -241,7 +142,7 @@ function BlogTemplate({ blog }) {
               if (block.type === 'divider') {
                 return (
                   <div key={index} className="mb-12 max-w-full" style={{ width: '100%' }}>
-                    <div ref={el => contentRefs.current[index] = el} style={{ paddingLeft: '16px', paddingRight: '16px' }}>
+                    <div style={{ paddingLeft: '16px', paddingRight: '16px' }}>
                       <div className="border-t" style={{ borderColor: '#00000026' }}></div>
                     </div>
                   </div>
@@ -267,13 +168,8 @@ function BlogTemplate({ blog }) {
                 {blog.paletteLine && (
                   <div className="flex-1 min-w-0">
                     <p
-                      className={`${useTahoma ? '' : 'font-serif'} text-size-2`}
-                      style={{
-                        ...retroStyles,
-                        fontFamily,
-                        width: '12.5%',
-                        wordBreak: 'break-word'
-                      }}
+                      className=""
+                      style={bodyStyle}
                     >
                       {blog.paletteLine}
                     </p>
@@ -285,14 +181,13 @@ function BlogTemplate({ blog }) {
                   {blog.colorPalette.map((color, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-16 min-h-[40px]"
+                      className="flex items-center gap-8 min-h-[40px]"
                     >
                       <div className="h-[20px] flex items-start">
                         <p
-                          className={`${useTahoma ? '' : 'font-serif'} text-size-2`}
+                          className=""
                           style={{
-                            ...retroStyles,
-                            fontFamily,
+                            ...bodyStyle,
                             width: 'auto',
                             whiteSpace: 'nowrap'
                           }}
@@ -327,15 +222,11 @@ function BlogTemplate({ blog }) {
           <div className="mt-28 pt-12 border-t" style={{ borderColor: '#00000026' }}>
             {/* Page Views */}
             {pageViews !== null && (
-              <div className="mb-10 max-w-full" style={{ width: '100%', minHeight: '20px' }}>
-                <div style={{ width: '12.5%' }}>
+              <div className="mb-10 max-w-full" style={{ width: '100%' }}>
+                <div>
                   <p
-                    className={`${useTahoma ? '' : 'font-serif'} text-size-2 opacity-50`}
-                    style={{
-                      ...retroStyles,
-                      fontFamily,
-                      wordBreak: 'break-word'
-                    }}
+                    className="opacity-50"
+                    style={bodyStyle}
                   >
                     Page views: {pageViews}
                   </p>
@@ -345,11 +236,11 @@ function BlogTemplate({ blog }) {
 
             {/* Tags */}
             {blog.tags && blog.tags.length > 0 && (
-              <div className="mb-10 max-w-full" style={{ width: '100%', minHeight: '20px' }}>
-                <div style={{ width: '12.5%' }}>
+              <div className="mb-10 max-w-full" style={{ width: '100%' }}>
+                <div>
                   <p
-                    className={`${useTahoma ? '' : 'font-serif'} text-size-2`}
-                    style={{ ...retroStyles, fontFamily }}
+                    className=""
+                    style={bodyStyle}
                   >
                     <span style={{ marginRight: '4px', opacity: 0.5 }}>Tags:</span>{blog.tags.map((tag, index) => (
                       <span
@@ -370,15 +261,10 @@ function BlogTemplate({ blog }) {
             )}
 
             {/* Published date */}
-            <div className="max-w-full" style={{ width: '100%', minHeight: '20px' }}>
+            <div className="max-w-full" style={{ width: '100%' }}>
               <p
-                className={`${useTahoma ? '' : 'font-serif'} text-size-2 opacity-50`}
-                style={{
-                  ...retroStyles,
-                  fontFamily,
-                  width: '12.5%',
-                  wordBreak: 'break-word'
-                }}
+                className="opacity-50"
+                style={bodyStyle}
               >
                 Published {new Date(blog.date).toLocaleDateString('en-US', {
                   year: 'numeric',
