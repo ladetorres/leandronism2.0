@@ -1,8 +1,10 @@
 import { useRef, useEffect, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import { Icon } from '@iconify/react'
 import LeftAlignedIcon from '../LeftAlignedIcon'
 import PhonePhotoGallery from '../PhonePhotoGallery'
-import { bodyStyle, headerStyle } from '../../styles/siteFonts'
+import { bodyStyle, featuredStyle, headerStyle } from '../../styles/siteFonts'
+import { markdownComponents, normalizeMarkdown } from './markdownContent.jsx'
 
 // Wrapper components for Iconify icons to match the interface expected by LeftAlignedIcon
 const PaintBrushIcon = ({ size, style }) => (
@@ -17,6 +19,7 @@ function PhotoEssayTemplate({ blog }) {
   const paletteContainerRef = useRef(null)
   const contentContainerRef = useRef(null)
   const [pageViews, setPageViews] = useState(null)
+  const contentBlocks = Array.isArray(blog.content) ? blog.content : null
 
   // Fetch page view count
   useEffect(() => {
@@ -69,17 +72,96 @@ function PhotoEssayTemplate({ blog }) {
           <Icon icon="pixel:camera" width={32} height={32} style={{ color: '#000000', opacity: 0.9 }} className="icon-animated" />
         </div>
 
-        <div className="mb-12 max-w-full" style={{ width: '100%', marginTop: 0 }}>
-          <p
-            className="leading-tight"
-            style={{
-              ...bodyStyle,
-              margin: 0
-            }}
-          >
-            {blog.content}
-          </p>
-        </div>
+        {contentBlocks ? (
+          <div className="mb-12 max-w-full" style={{ width: '100%', marginTop: 0 }}>
+            {contentBlocks.map((block, index) => {
+              if (block.type === 'paragraph') {
+                return (
+                  <div key={index} className="mb-12 max-w-full" style={{ width: '100%' }}>
+                    <div
+                      className="leading-tight"
+                      style={{
+                        ...bodyStyle,
+                        overflowWrap: 'break-word',
+                        whiteSpace: 'pre-wrap'
+                      }}
+                    >
+                      <ReactMarkdown components={markdownComponents}>
+                        {normalizeMarkdown(block.text)}
+                      </ReactMarkdown>
+                    </div>
+                  </div>
+                )
+              }
+
+              if (block.type === 'featured-line') {
+                return (
+                  <div key={index} className="mb-12 max-w-full" style={{ width: '100%' }}>
+                    <div
+                      className="leading-tight"
+                      style={{
+                        ...featuredStyle,
+                        whiteSpace: 'pre-wrap'
+                      }}
+                    >
+                      <ReactMarkdown components={markdownComponents}>
+                        {normalizeMarkdown(block.text)}
+                      </ReactMarkdown>
+                    </div>
+                  </div>
+                )
+              }
+
+              if (block.type === 'quote') {
+                return (
+                  <div key={index} className="mb-12 max-w-full" style={{ width: '100%' }}>
+                    <div
+                      className="leading-tight"
+                      style={{
+                        ...bodyStyle,
+                        overflowWrap: 'break-word',
+                        whiteSpace: 'pre-wrap',
+                        paddingLeft: '2em',
+                        borderLeft: '2px solid #000000',
+                        opacity: 0.8
+                      }}
+                    >
+                      <span style={{ marginRight: '4px' }}>"</span>
+                      <ReactMarkdown components={markdownComponents}>
+                        {normalizeMarkdown(block.text)}
+                      </ReactMarkdown>
+                      <span style={{ marginLeft: '4px' }}>"</span>
+                    </div>
+                  </div>
+                )
+              }
+
+              if (block.type === 'divider') {
+                return (
+                  <div key={index} className="mb-12 max-w-full" style={{ width: '100%' }}>
+                    <div style={{ paddingLeft: '16px', paddingRight: '16px' }}>
+                      <div className="border-t" style={{ borderColor: '#00000026' }}></div>
+                    </div>
+                  </div>
+                )
+              }
+
+              return null
+            })}
+          </div>
+        ) : (
+          <div className="mb-12 max-w-full" style={{ width: '100%', marginTop: 0 }}>
+            <p
+              className="leading-tight"
+              style={{
+                ...bodyStyle,
+                margin: 0
+              }}
+            >
+              {blog.content}
+            </p>
+          </div>
+        )}
 
         {/* Photos */}
         <div className="space-y-12">
