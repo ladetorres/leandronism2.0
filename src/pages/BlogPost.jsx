@@ -4,6 +4,7 @@ import PhotoEssayTemplate from '../components/blog-templates/PhotoEssayTemplate'
 import BlogTemplate from '../components/blog-templates/BlogTemplate'
 import PlaylistTemplate from '../components/blog-templates/PlaylistTemplate'
 import GameTemplate from '../components/blog-templates/GameTemplate'
+import MovieReviewTemplate from '../components/blog-templates/MovieReviewTemplate'
 
 function BlogPost() {
   const { slug } = useParams()
@@ -25,6 +26,8 @@ function BlogPost() {
         return <PlaylistTemplate blog={blog} />
       case 'game':
         return <GameTemplate blog={blog} />
+      case 'movie-review':
+        return <MovieReviewTemplate blog={blog} />
       default:
         return <BlogTemplate blog={blog} />
     }

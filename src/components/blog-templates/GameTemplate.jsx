@@ -1,5 +1,6 @@
 import PokemonParty from '../../games/PokemonParty'
 import PokemonGuessWho from '../../games/PokemonGuessWho'
+import PokemonRowletRun from '../../games/PokemonRowletRun'
 import { bodyStyle, headerStyle } from '../../styles/siteFonts'
 
 // Map of game paths to components + viewport / canvas config
@@ -27,6 +28,22 @@ const gameComponents = {
     canvasStyle: {
       width: '100%',
       maxWidth: '100%',
+      height: '580px',
+      backgroundColor: '#FFFFFF',
+      border: '1px solid #999',
+      overflow: 'hidden',
+    },
+  },
+  '/games/PokemonRowletRun.jsx': {
+    Component: PokemonRowletRun,
+    playableOuterClass: 'w-full overflow-hidden pb-16',
+    playableClass: 'flex justify-center max-[359px]:justify-end items-center md:hidden',
+    notPlayableClass: 'hidden md:block',
+    notPlayableMessage: 'Only playable on screens < 767px',
+    canvasStyle: {
+      width: '360px',
+      minWidth: '360px',
+      flexShrink: 0,
       height: '580px',
       backgroundColor: '#FFFFFF',
       border: '1px solid #999',
@@ -67,26 +84,23 @@ function GameTemplate({ blog }) {
       </div>
 
       {/* Game Content */}
-      <div className="w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-none mx-auto pb-16">
+      {gameConfig && (
+        <div className={`${gameConfig.notPlayableClass} w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-[630px] mx-auto`}>
+          <p
+            className="leading-tight"
+            style={bodyStyle}
+          >
+            {gameConfig.notPlayableMessage}
+          </p>
+        </div>
+      )}
+      <div className={gameConfig?.playableOuterClass ?? 'w-full px-3 sm:max-w-[360px] md:max-w-[450px] lg:max-w-[540px] xl:max-w-none mx-auto pb-16'}>
         {gameConfig && (
-          <>
-            <div className={gameConfig.notPlayableClass}>
-              <div className="max-w-full" style={{ width: '100%' }}>
-                <p
-                  className="leading-tight"
-                  style={bodyStyle}
-                >
-                  {gameConfig.notPlayableMessage}
-                </p>
-              </div>
+          <div className={gameConfig.playableClass}>
+            <div style={gameConfig.canvasStyle}>
+              {GameComponent && <GameComponent />}
             </div>
-
-            <div className={gameConfig.playableClass}>
-              <div style={gameConfig.canvasStyle}>
-                {GameComponent && <GameComponent />}
-              </div>
-            </div>
-          </>
+          </div>
         )}
       </div>
 
